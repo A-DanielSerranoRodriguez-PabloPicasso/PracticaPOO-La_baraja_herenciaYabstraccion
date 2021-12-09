@@ -8,17 +8,28 @@ public class Mano extends Baraja {
 		super();
 	}
 
+	/**
+	 * Lista las cartas de la mano actual.
+	 */
 	public void listarCartas() {
 		int contador = 0;
-		for(Carta cartas : this.lista_cartas) {
-			System.out.print(cartas.getNombreCarta() + " (Numero: " + cartas.getNumero() + " | Palo: " + cartas.getPalo() + ")\t");
+		for (Carta cartas : this.lista_cartas) {
+			System.out.print(cartas.getNombreCarta() + " (Numero: " + cartas.getNumero() + " | Palo: "
+					+ cartas.getPalo() + ")\t");
 			contador++;
-			if(contador==3)
+			if (contador == 3)
 				System.out.println();
 		}
 		System.out.println();
 	}
 
+	/**
+	 * Lista las cartas de la mano actual y te permite elegir la carta que quieres
+	 * eliminar de esta. Útil para intercambio de cartas o para devolverla a la
+	 * baraja.
+	 * 
+	 * @return Objeto 'Carta' que eliminamos de la mano.
+	 */
 	public Carta elegirCarta() {
 		Carta carta = null;
 		@SuppressWarnings("resource")
@@ -35,8 +46,8 @@ public class Mano extends Baraja {
 		try {
 			carta = new Carta(numero, palo);
 			ListIterator<Carta> cartas = this.lista_cartas.listIterator();
-			while(cartas.hasNext()) {
-				if(cartas.next().getId() == carta.getId()) {
+			while (cartas.hasNext()) {
+				if (cartas.next().getId() == carta.getId()) {
 					cartas.remove();
 				}
 			}

@@ -10,7 +10,7 @@ public class Mesa {
 	public Mesa() {
 		this.baraja = new Baraja();
 	}
-	
+
 	public Mesa(int tipoBaraja) {
 		this.baraja = new Baraja(tipoBaraja);
 	}
@@ -18,7 +18,7 @@ public class Mesa {
 	public Mesa(int tipoBaraja, boolean barajada) {
 		this.baraja = new Baraja(tipoBaraja, barajada);
 	}
-	
+
 	// Getters - Setters
 	public Baraja getBaraja() {
 		return baraja;
@@ -36,6 +36,11 @@ public class Mesa {
 		System.out.println(this.baraja.lista_cartas);
 	}
 
+	/**
+	 * Roba una carta de la baraja de la mesa.
+	 * 
+	 * @return Objeto 'Carta' que se ha robado.
+	 */
 	public Carta robarCartaDeBaraja() {
 		Carta carta = this.baraja.robar();
 		return carta;
@@ -44,7 +49,7 @@ public class Mesa {
 	/**
 	 * Roba varias cartas de la baraja de la mesa.
 	 * 
-	 * @param n Entero que representa el nmero de cartas que se van a robar.
+	 * @param n Entero que representa el numero de cartas que se van a robar.
 	 * @return List<Carta> con las cartas robadas.
 	 */
 	public List<Carta> robarVariasCartas(int n) {
@@ -55,10 +60,14 @@ public class Mesa {
 		return cartas;
 	}
 
-	// WTF como quieres que la añada? Una aleatoria o en orden?
-//	public void addCartaABaraja() {
-//		
-//	}
+	/**
+	 * Añadimos una carta de nuestra mano al final de la baraja de la mesa.
+	 * 
+	 * @param carta Objeto 'Carta' que introducimos.
+	 */
+	public void addCartaABaraja(Carta carta) {
+		this.baraja.insertaCartaFinal(carta);
+	}
 
 	// toString
 	@Override

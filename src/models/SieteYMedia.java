@@ -31,7 +31,6 @@ public class SieteYMedia extends AbstractGame {
 			}
 		}
 
-		barajar();
 		System.out.println("\n\n\n\n### COMENCEMOS ###\n");
 		start();
 	}
@@ -40,6 +39,7 @@ public class SieteYMedia extends AbstractGame {
 	public void menuPrincipal() {
 		@SuppressWarnings("resource")
 		Scanner sc = new Scanner(System.in);
+		this.jugadores = new ArrayList<AbstractPlayer>();
 		int cantJugadores = 0, tipoBaraja = 0;
 		boolean error;
 
@@ -49,7 +49,9 @@ public class SieteYMedia extends AbstractGame {
 			System.out.print("\n->: ");
 			switch (Integer.parseInt(sc.next())) {
 			case 1:
-				// TODO Asignar una IA (hay que crearla todavía xD)
+				System.out.print("\nNombre del jugador: ");
+				this.jugadores.add(new HumanPlayer(sc.next()));
+				this.jugadores.add(new CPU_Player());
 				error = false;
 				break;
 			case 2:
@@ -58,7 +60,7 @@ public class SieteYMedia extends AbstractGame {
 				System.out.print("->: ");
 				cantJugadores = Integer.parseInt(sc.next());
 				for (int i = 0; i < cantJugadores; i++) {
-					System.out.print("\nNombre jugador " + (i + 1) + ": ");
+					System.out.print("\nNombre del jugador " + (i + 1) + ": ");
 					this.jugadores.add(new HumanPlayer(sc.next()));
 				}
 				break;
@@ -104,8 +106,14 @@ public class SieteYMedia extends AbstractGame {
 	@Override
 	public void start() {
 		AbstractPlayer jugador;
+
+		barajar();
+		for (AbstractPlayer player : jugadores) {
+			player.jugarTurno7yMedia();
+		}
 		do {
 			int subirRonda = 0;
+
 			for (AbstractPlayer player : this.jugadores) {
 				if (player.getRondasJugadas() == this.getRonda()) {
 					subirRonda++;
@@ -116,16 +124,22 @@ public class SieteYMedia extends AbstractGame {
 			} else {
 				subirRonda = 0;
 			}
+
 			jugador = nextTurno();
 			jugador.jugarTurno7yMedia();
+
 			if (jugador.isPasar()) {
-				fin++;
+				this.fin++;
 			} else {
 				if (fin != this.jugadores.size())
-					fin = 0;
+					this.fin = 0;
 			}
-		} while (fin < this.jugadores.size());
-		finish();
+			if (this.fin == this.jugadores.size()) {
+				this.setFinished(true);
+			}
+		} while (this.fin < this.jugadores.size());
+		if (this.isFinished())
+			finish();
 	}
 
 	@Override
@@ -135,30 +149,36 @@ public class SieteYMedia extends AbstractGame {
 
 	@Override
 	public void finish() {
+		@SuppressWarnings("resource")
+		Scanner sc = new Scanner(System.in);
 		ArrayList<AbstractPlayer> ganadores = new ArrayList<AbstractPlayer>();
 		AbstractPlayer ganador = null;
 		double winner = Double.MIN_VALUE;
 		int contador = 0;
+		boolean error;
+
+		this.setRonda(0);
+		this.fin = 0;
 
 		for (AbstractPlayer jugador : this.jugadores) {
 			System.out.println(jugador.getNombre() + ": " + jugador.getPuntos());
 			if (jugador.getPuntos() > winner && jugador.getPuntos() <= 7.5) {
 				winner = jugador.getPuntos();
-				ganador = jugador;
 			} else if (jugador.getPuntos() < winner && jugador.getPuntos() >= 7.5) {
 				winner = jugador.getPuntos();
-				ganador = jugador;
 			}
 		}
+
 		for (AbstractPlayer jugador : this.jugadores) {
 			if (jugador.getPuntos() == winner) {
 				ganadores.add(jugador);
 			}
 		}
+
 		if (ganadores.size() == 1) {
-			System.out.println("El ganador es " + ganador.getNombre() + " con un " + ganador.getPuntos());
+			System.out.println("\nEl ganador es " + ganadores.get(0).getNombre() + " con un " + ganadores.get(0).getPuntos());
 		} else {
-			System.out.println("Los ganadores son:");
+			System.out.println("\nLos ganadores son:");
 			for (AbstractPlayer jugador : ganadores) {
 				System.out.print("  " + jugador.getNombre() + "    \t");
 				contador++;
@@ -170,7 +190,51 @@ public class SieteYMedia extends AbstractGame {
 
 			System.out.println("\nCon un: " + winner);
 		}
-
+		System.out.println("\n\n\n¿Y ahora?");
+		do {
+			System.out.println("\n1.Reiniciar\n2.Nueva partida\n3.Salir");
+			System.out.print("\n->: ");
+			switch (Integer.parseInt(sc.next())) {
+			case 1:
+				error = false;
+				ArrayList<AbstractPlayer> copia = new ArrayList<AbstractPlayer>();
+				System.out.println("\n\n\n");
+				for (AbstractPlayer nuevo : this.jugadores) {
+					if (nuevo instanceof HumanPlayer) {
+						copia.add(new HumanPlayer(nuevo.getNombre()));
+					} else if (nuevo instanceof CPU_Player) {
+						copia.add(new CPU_Player());
+					}
+					for (int i = 0; i < nuevo.mano.getCantidadCartas(); i++) {
+						this.mesa.addCartaABaraja(nuevo.mano.robar());
+					}
+				}
+				this.jugadores = new ArrayList<AbstractPlayer>();
+				for (AbstractPlayer nuevo : copia) {
+					if (nuevo instanceof HumanPlayer) {
+						this.jugadores.add(new HumanPlayer(nuevo.getNombre()));
+					} else if (nuevo instanceof CPU_Player) {
+						this.jugadores.add(new CPU_Player());
+					}
+				}
+				for (AbstractPlayer jugador : this.jugadores) {
+					jugador.setMesa(this.getMesa());
+				}
+				start();
+				break;
+			case 2:
+				error = false;
+				System.out.println("\n\n\n");
+				bienvenida();
+				break;
+			case 3:
+				error = false;
+				break;
+			default:
+				System.out.println("\nEliga una opcion correcta\n");
+				error = true;
+			}
+		} while (error);
 	}
 
 }

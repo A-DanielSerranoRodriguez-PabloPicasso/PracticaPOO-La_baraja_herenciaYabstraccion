@@ -22,6 +22,17 @@ public abstract class AbstractPlayer {
 		this.rondasJugadas = 0;
 	}
 
+	/**
+	 * Constructor de una CPU. Para asignarle una mesa, usa el Setter.
+	 */
+	public AbstractPlayer() {
+		this.nombre = "CPU";
+		this.puntos = 0;
+		this.mano = new Mano();
+		this.pasar = false;
+		this.rondasJugadas = 0;
+	}
+
 	// Getters - Setters
 	public String getNombre() {
 		return nombre;
@@ -64,10 +75,16 @@ public abstract class AbstractPlayer {
 	}
 
 	// Methods
+	/**
+	 * Jugamos un turno en el juego de cartas '7 y media'.
+	 */
 	public abstract void jugarTurno7yMedia();
 
+	/**
+	 * Mostramos la mano que el jugador posee ahora mismo.
+	 */
 	public void mostrarMano() {
-		System.out.println(this.mano.toString());
+		this.mano.listarCartas();
 	}
 
 	// toString
