@@ -17,7 +17,7 @@ public class CPU_Player extends AbstractPlayer {
 			else
 				System.out.println("Turno de la CPU. Puntuación: " + this.mano.lista_cartas.get(0).getValor7yMedia() + " + ?\n\n");
 
-			if (this.getPuntos() <= 5) {
+			if (this.getPuntos() <= 4.5) {
 				this.mano.insertaCartaFinal(this.mesa.robarCartaDeBaraja());
 				this.setPuntos(
 						getPuntos() + this.mano.lista_cartas.get(this.mano.getCantidadCartas() - 1).getValor7yMedia());
