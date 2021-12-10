@@ -20,8 +20,8 @@ public class Baraja {
 	 * @param tipoBaraja Entero que indica si se usaran 40 cartas (1) u 80 (2).
 	 */
 	public Baraja(int tipoBaraja) {
+		this();
 		if (tipoBaraja == 1) {
-			this.lista_cartas = new ArrayList<Carta>();
 			for (int i = 1; i <= 40; i++) {
 				try {
 					this.lista_cartas.add(new Carta(i));
@@ -31,7 +31,6 @@ public class Baraja {
 			}
 		} else if (tipoBaraja == 2) {
 			int cont = 0;
-			this.lista_cartas = new ArrayList<Carta>();
 
 			while (cont < 2) {
 				for (int i = 1; i <= 40; i++) {
@@ -54,32 +53,7 @@ public class Baraja {
 	 * @param barajar    Indica si se quiere barajar la baraja o no.
 	 */
 	public Baraja(int tipoBaraja, boolean barajar) {
-		this.lista_cartas = new ArrayList<Carta>(40);
-		if (tipoBaraja == 1) {
-			for (int i = 1; i <= 40; i++) {
-				try {
-					this.lista_cartas.add(new Carta(i));
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		} else if (tipoBaraja == 2) {
-			this.lista_cartas = new ArrayList<Carta>(80);
-			int cont = 0, j = 1;
-
-			while (cont < 2) {
-				for (int i = 1; i <= 40; i++) {
-					try {
-						this.lista_cartas.add(new Carta(j));
-						j++;
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-
-				}
-				cont++;
-			}
-		}
+		this(tipoBaraja);
 		if (barajar)
 			barajar();
 	}
@@ -135,10 +109,7 @@ public class Baraja {
 			System.out.println("No quedan cartas");
 			return null;
 		} else {
-			Carta carta;
-			carta = this.lista_cartas.get(0);
-			this.lista_cartas.remove(0);
-			return carta;
+			return this.lista_cartas.remove(0);
 		}
 	}
 
@@ -232,11 +203,7 @@ public class Baraja {
 	 * @return Boleano que dice si esta vacia (true) o no (false).
 	 */
 	public boolean isVacia() {
-		if (this.lista_cartas.size() == 0) {
-			return true;
-		} else {
-			return false;
-		}
+		return this.lista_cartas.isEmpty();
 	}
 
 	// toString

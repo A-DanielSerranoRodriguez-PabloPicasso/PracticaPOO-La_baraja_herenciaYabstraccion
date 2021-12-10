@@ -152,20 +152,29 @@ public class SieteYMedia extends AbstractGame {
 		@SuppressWarnings("resource")
 		Scanner sc = new Scanner(System.in);
 		ArrayList<AbstractPlayer> ganadores = new ArrayList<AbstractPlayer>();
-		AbstractPlayer ganador = null;
 		double winner = Double.MIN_VALUE;
-		int contador = 0;
+		int contador = 0, verPuntosReversa = 0;
 		boolean error;
 
 		this.setRonda(0);
 		this.fin = 0;
 
+		
 		for (AbstractPlayer jugador : this.jugadores) {
 			System.out.println(jugador.getNombre() + ": " + jugador.getPuntos());
 			if (jugador.getPuntos() > winner && jugador.getPuntos() <= 7.5) {
 				winner = jugador.getPuntos();
-			} else if (jugador.getPuntos() < winner && jugador.getPuntos() >= 7.5) {
-				winner = jugador.getPuntos();
+			} else if (jugador.getPuntos() >= 7.5) {
+				verPuntosReversa++;
+			}
+		}
+		
+		if(verPuntosReversa==this.jugadores.size()) {
+			winner = Double.MAX_VALUE;
+			for (AbstractPlayer jugador : this.jugadores) {
+				if (jugador.getPuntos() < winner) {
+					winner = jugador.getPuntos();
+				}
 			}
 		}
 
@@ -176,7 +185,8 @@ public class SieteYMedia extends AbstractGame {
 		}
 
 		if (ganadores.size() == 1) {
-			System.out.println("\nEl ganador es " + ganadores.get(0).getNombre() + " con un " + ganadores.get(0).getPuntos());
+			System.out.println(
+					"\nEl ganador es " + ganadores.get(0).getNombre() + " con un " + ganadores.get(0).getPuntos());
 		} else {
 			System.out.println("\nLos ganadores son:");
 			for (AbstractPlayer jugador : ganadores) {
@@ -188,8 +198,11 @@ public class SieteYMedia extends AbstractGame {
 				}
 			}
 
-			System.out.println("\nCon un: " + winner);
+			System.out.println("\n\nCon un: " + winner);
 		}
+		ganadores.clear();
+		winner = 0;
+
 		System.out.println("\n\n\n¿Y ahora?");
 		do {
 			System.out.println("\n1.Reiniciar\n2.Nueva partida\n3.Salir");
@@ -229,6 +242,7 @@ public class SieteYMedia extends AbstractGame {
 				break;
 			case 3:
 				error = false;
+				System.out.println("\n");
 				break;
 			default:
 				System.out.println("\nEliga una opcion correcta\n");

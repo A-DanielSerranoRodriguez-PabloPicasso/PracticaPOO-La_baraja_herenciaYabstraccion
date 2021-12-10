@@ -1,12 +1,12 @@
 package models;
 
 public abstract class AbstractPlayer {
-	private String nombre;
-	private double puntos;
 	protected Mano mano;
 	protected Mesa mesa;
-	private boolean pasar;
+	private String nombre;
 	private int rondasJugadas;
+	private double puntos;
+	private boolean pasar;
 
 	// Const
 	/**
