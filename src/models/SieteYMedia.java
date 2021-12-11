@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 public class SieteYMedia extends AbstractGame {
 	private int fin = 0;
+	modoJuego modo;
 
 	// Const
 	public SieteYMedia() {
@@ -31,7 +32,7 @@ public class SieteYMedia extends AbstractGame {
 			}
 		}
 
-		System.out.println("\n\n\n\n### COMENCEMOS ###\n");
+		System.out.println("\n\n\n\n### COMENCEMOS LA PARTIDA " + modo +" ###\n");
 		start();
 	}
 
@@ -49,6 +50,7 @@ public class SieteYMedia extends AbstractGame {
 			try {
 				switch (Integer.parseInt(sc.nextLine())) {
 				case 1:
+					modo = modoJuego.vsCPU;
 					error = false;
 
 					System.out.print("\nNombre del jugador: ");
@@ -57,6 +59,7 @@ public class SieteYMedia extends AbstractGame {
 					break;
 
 				case 2:
+					modo = modoJuego.PvP;
 					error = false;
 					int cantJugadores = -1;
 					// cantJugadores es -1 ya que this.jugadores.size() es 0.

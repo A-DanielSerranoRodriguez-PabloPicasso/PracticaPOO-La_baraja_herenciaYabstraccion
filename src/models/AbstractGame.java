@@ -6,7 +6,7 @@ public abstract class AbstractGame {
 	private boolean finished;
 
 	@SuppressWarnings("unused")
-	private enum modoJuego {
+	protected enum modoJuego {
 		solitario, vsCPU, PvP, multiplayer
 	};
 
